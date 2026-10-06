@@ -1,0 +1,11 @@
+namespace App1
+{
+    // MatchWindow 用来承载"某个玩家的最近对局"：左侧列表 + 右侧队伍 A/B 详情。
+    // 由主窗口在点击「查看最近对局」时创建，两个平台共用一套。
+    [default_interface]
+    runtimeclass MatchWindow : Microsoft.UI.Xaml.Window
+    {
+        // 静态工厂：用于从 C++ 侧创建窗口实例。
+        static MatchWindow Create();
+    }
+}

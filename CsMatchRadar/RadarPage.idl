@@ -1,0 +1,8 @@
+namespace App1
+{
+    [default_interface]
+    runtimeclass RadarPage : Microsoft.UI.Xaml.Controls.UserControl
+    {
+        RadarPage();
+    }
+}

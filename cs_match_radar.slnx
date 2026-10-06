@@ -1,0 +1,16 @@
+<Solution>
+  <Configurations>
+    <Platform Name="ARM64" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="5eApi/5eApi.vcxproj">
+    <Platform Solution="*|ARM64" Project="x64" />
+  </Project>
+  <Project Path="CsMatchRadar/CsMatchRadar.vcxproj">
+    <Deploy />
+  </Project>
+  <Project Path="PerfectWorldApi/PerfectWorldApi.vcxproj">
+    <Platform Solution="*|ARM64" Project="x64" />
+  </Project>
+</Solution>

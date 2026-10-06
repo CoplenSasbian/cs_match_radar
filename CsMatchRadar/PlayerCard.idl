@@ -1,0 +1,41 @@
+﻿namespace App1
+{
+    // 卡片里通用的「标签 - 数值」条目。
+    // 所有统计区块共用同一套渲染模板。
+    runtimeclass StatItem
+    {
+        StatItem();
+
+        String Label{ get; };
+        String Value{ get; };
+    }
+
+    // 常用武器一行。
+    runtimeclass WeaponItem
+    {
+        WeaponItem();
+
+        String NameZh{ get; };
+        String Stats{ get; };
+        String Rating{ get; };
+    }
+
+    // 常用地图一行。
+    runtimeclass MapItem
+    {
+        MapItem();
+
+        String MapName{ get; };
+        String Stats{ get; };
+        String WinRate{ get; };
+    }
+
+    // 人物卡片：查到一个玩家后展示资料。
+    // 5E 与完美共用这一套结构，由填充代码决定显示什么。
+    // 「查看最近对局」的点击通过纯 C++ 回调通知宿主，不走 IDL 事件。
+    [default_interface]
+    runtimeclass PlayerCard : Microsoft.UI.Xaml.Controls.UserControl
+    {
+        PlayerCard();
+    }
+}

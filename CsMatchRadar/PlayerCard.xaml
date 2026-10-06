@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+    人物卡片：查到一个玩家后展示其资料。
+    5E 与完美共用这一套结构，只由填充代码决定显示哪些字段。
+    字段含义见各 TextBlock 的 AutomationId。
+-->
+<UserControl
+    x:Class="App1.PlayerCard"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:App1"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Border Padding="0" CornerRadius="0">
+        <StackPanel Spacing="12">
+
+            <!-- ===== 身份 ===== -->
+            <Grid ColumnSpacing="14">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- 头像：完美有图，5E 用首字母占位 -->
+                <Grid Grid.Column="0" Width="72" Height="72">
+                    <Border CornerRadius="8"
+                            Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
+                        <TextBlock x:Name="AvatarFallback" Text=""
+                                   FontSize="28" FontWeight="SemiBold"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Border>
+                    <Image x:Name="AvatarImage" Width="72" Height="72"
+                           Stretch="UniformToFill" Visibility="Collapsed"/>
+                </Grid>
+
+                <StackPanel Grid.Column="1" Spacing="4">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <TextBlock x:Name="Nickname" Text="—"
+                                   FontSize="20" FontWeight="SemiBold"
+                                   TextTrimming="CharacterEllipsis"/>
+                        <Border x:Name="TitleBadge"
+                                Background="{ThemeResource AccentFillColorSecondaryBrush}"
+                                CornerRadius="4" Padding="6,1"
+                                Visibility="Collapsed">
+                            <TextBlock x:Name="TitleText" Text=""
+                                       FontSize="12" FontWeight="SemiBold"/>
+                        </Border>
+                    </StackPanel>
+                    <TextBlock x:Name="IdLine" Text="" FontSize="12"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                               TextWrapping="Wrap"/>
+                    <StackPanel Orientation="Horizontal" Spacing="10" Margin="0,4,0,0">
+                        <Border Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+                                CornerRadius="4" Padding="8,3">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <TextBlock Text="段位" FontSize="11"
+                                           Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
+                                <TextBlock x:Name="RankText" Text="—" FontSize="13" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+                                CornerRadius="4" Padding="8,3">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <TextBlock Text="赛季" FontSize="11"
+                                           Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
+                                <TextBlock x:Name="SeasonText" Text="—" FontSize="13" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+
+            <!-- ===== 本赛季 / 当前统计 ===== -->
+            <Border x:Name="Section1" Padding="12" CornerRadius="6"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
+                <StackPanel Spacing="8">
+                    <TextBlock x:Name="Section1Title" Text="本赛季战绩" FontSize="12"
+                               FontWeight="SemiBold"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                    <ItemsControl x:Name="SeasonStats">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapGrid Orientation="Horizontal" ItemWidth="104" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="local:StatItem">
+                                <StackPanel Margin="0,4,8,4" Spacing="1">
+                                    <TextBlock Text="{x:Bind Label}" FontSize="11"
+                                               Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
+                                    <TextBlock Text="{x:Bind Value}" FontSize="15"
+                                               FontWeight="SemiBold"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <!-- ===== 累计战绩 ===== -->
+            <Border x:Name="Section2" Padding="12" CornerRadius="6"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
+                <StackPanel Spacing="8">
+                    <TextBlock x:Name="Section2Title" Text="累计战绩" FontSize="12"
+                               FontWeight="SemiBold"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                    <ItemsControl x:Name="CareerStats">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapGrid Orientation="Horizontal" ItemWidth="104" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="local:StatItem">
+                                <StackPanel Margin="0,4,8,4" Spacing="1">
+                                    <TextBlock Text="{x:Bind Label}" FontSize="11"
+                                               Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
+                                    <TextBlock Text="{x:Bind Value}" FontSize="15"
+                                               FontWeight="SemiBold"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <!-- ===== 能力（五角星） ===== -->
+            <Border x:Name="Section3" Padding="12" CornerRadius="6"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    Visibility="Collapsed">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="能力评估" FontSize="12" FontWeight="SemiBold"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                    <ItemsControl x:Name="AbilityStats">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapGrid Orientation="Horizontal" ItemWidth="104" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="local:StatItem">
+                                <StackPanel Margin="0,4,8,4" Spacing="1">
+                                    <TextBlock Text="{x:Bind Label}" FontSize="11"
+                                               Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
+                                    <TextBlock Text="{x:Bind Value}" FontSize="15"
+                                               FontWeight="SemiBold"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <!-- ===== 近期趋势 ===== -->
+            <Border x:Name="Section4" Padding="12" CornerRadius="6"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    Visibility="Collapsed">
+                <StackPanel Spacing="8">
+                    <TextBlock x:Name="Section4Title" Text="近期趋势（最近场次）" FontSize="12"
+                               FontWeight="SemiBold"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                    <!-- 折线图：见 PlayerCard.xaml.cpp 的 DrawTrend() -->
+                    <Canvas x:Name="TrendCanvas" Height="110" Width="640"
+                            HorizontalAlignment="Left"/>
+                    <TextBlock x:Name="TrendCaption" Text="" FontSize="11"
+                               Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- ===== 常用武器 ===== -->
+            <Expander x:Name="WeaponsExpander" Header="常用武器"
+                      HorizontalAlignment="Stretch" Visibility="Collapsed">
+                <ItemsControl x:Name="WeaponList" Margin="0,8,0,0">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="local:WeaponItem">
+                            <Grid Padding="4,4" ColumnSpacing="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="{x:Bind NameZh}"
+                                           FontWeight="SemiBold" MinWidth="110"/>
+                                <TextBlock Grid.Column="1" Text="{x:Bind Stats}"
+                                           FontSize="12" MinWidth="200"/>
+                                <TextBlock Grid.Column="2" Text="{x:Bind Rating}"
+                                           FontSize="12"
+                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Expander>
+
+            <!-- ===== 常用地图 ===== -->
+            <Expander x:Name="MapsExpander" Header="常用地图"
+                      HorizontalAlignment="Stretch" Visibility="Collapsed">
+                <ItemsControl x:Name="MapList" Margin="0,8,0,0">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="local:MapItem">
+                            <Grid Padding="4,4" ColumnSpacing="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="{x:Bind MapName}"
+                                           FontWeight="SemiBold" MinWidth="110"/>
+                                <TextBlock Grid.Column="1" Text="{x:Bind Stats}"
+                                           FontSize="12"/>
+                                <TextBlock Grid.Column="2" Text="{x:Bind WinRate}"
+                                           FontSize="12"
+                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Expander>
+
+            <!-- ===== 操作 ===== -->
+            <Button x:Name="ViewMatchesButton" Content="查看最近对局"
+                    HorizontalAlignment="Left" Style="{ThemeResource AccentButtonStyle}"
+                    Click="OnViewMatchesClick"/>
+        </StackPanel>
+    </Border>
+</UserControl>

@@ -1,0 +1,30 @@
+namespace App1
+{
+    [default_interface]
+    runtimeclass RadarPlayer
+    {
+        RadarPlayer();
+
+        String Name{ get; };
+        Int32 Team{ get; };
+        Boolean IsMe{ get; };
+
+        String FiveERank{ get; };
+        String FiveEPlaytime{ get; };
+        String FiveEStatus{ get; };
+        Windows.UI.Xaml.Media.Brush FiveEStatusBrush{ get; };
+        Boolean HasFiveE{ get; };
+
+        String PerfectRank{ get; };
+        String PerfectPlaytime{ get; };
+        String PerfectStatus{ get; };
+        Windows.UI.Xaml.Media.Brush PerfectStatusBrush{ get; };
+        Boolean HasPerfect{ get; };
+
+        String RiskBadge{ get; };
+        Windows.UI.Xaml.Media.Brush RiskBrush{ get; };
+
+        String FiveEUuid{ get; };
+        String PerfectSteamId{ get; };
+    }
+}

@@ -1,0 +1,64 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build Results & Intermediate Files
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+ARM/
+ARM64/
+[Bb]in/
+[Oo]bj/
+Generated Files/
+CsMachRadar/
+5eApi/5eApi/
+5eApi/x64/
+5eApi/Debug/
+5eApi/Release/
+PerfectWorldApi/x64/
+PerfectWorldApi/Debug/
+PerfectWorldApi/Release/
+CsMatchRadar/x64/
+CsMatchRadar/ARM64/
+CsMatchRadar/Debug/
+CsMatchRadar/Release/
+
+# NuGet Packages
+packages/
+*.nupkg
+
+# MSVC Output & Cache
+*.tlog
+*.obj
+*.pch
+*.pdb
+*.idb
+*.ilk
+*.exe
+*.exp
+*.lib
+*.dll
+*.ipch
+*.aps
+*.res
+*.resfiles
+*.xbf
+*.pri
+*.pri.xml
+*.log
+*.VC.db
+*.opendb
+*.winmd
+*.recipe
+
+# vcpkg
+vcpkg_installed/
+
+# Temp & Crash Logs
+*.crash.log
+CsMatchRadar_crash.log

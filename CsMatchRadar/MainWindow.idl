@@ -1,0 +1,117 @@
+﻿namespace App1
+{
+    // 对局列表中的一行。
+    // 字段均为界面直接展示所需的已格式化文本。
+    runtimeclass MatchRow
+    {
+        MatchRow();
+
+        String MatchId{ get; };
+        String MapLabel{ get; };
+        String ResultText{ get; };      // 胜利 / 失败 / 未知
+        String ScoreText{ get; };       // 16 : 14
+        String TimeText{ get; };        // 开始时间
+        String KdaText{ get; };         // 24 / 15 / 5
+        String RatingText{ get; };      // 1.25
+        String AdrText{ get; };         // 85.3
+        String RwsText{ get; };
+        String EloText{ get; };         // +21
+        String LevelText{ get; };       // 段位
+        String DurationText{ get; };    // 时长
+        Boolean IsWin{ get; };
+        // 胜负色条画刷，由实现代码注入。
+        Microsoft.UI.Xaml.Media.Brush ResultBrush{ get; };
+    }
+
+    // 详情面板中的一名玩家。
+    // 概览字段用于折叠态的行展示，展开字段用于查看完整信息。
+    runtimeclass PlayerRow
+    {
+        PlayerRow();
+
+        // ---- 概览 ----
+        String Nickname{ get; };
+        String GroupText{ get; };
+        String KdaText{ get; };
+        String KdText{ get; };
+        String AdrText{ get; };
+        String RatingText{ get; };
+        String RwsText{ get; };
+        String KastText{ get; };
+        String HeadshotText{ get; };
+        String AwpText{ get; };
+        String MvpText{ get; };
+        String LevelText{ get; };
+        String SteamId{ get; };
+        String SteamUrl{ get; };
+        Boolean HasSteam{ get; };
+        Boolean IsMvp{ get; };
+        Boolean IsMyTeam{ get; };
+        Microsoft.UI.Xaml.Visibility MvpVisibility{ get; };
+        Microsoft.UI.Xaml.Visibility SteamVisibility{ get; };
+
+        // ---- 展开后的完整信息 ----
+        String MultiKillText{ get; };       // 多杀汇总（2 杀及以上）
+        String Kills1Text{ get; };          // 一杀..五杀明细
+        String ClutchText{ get; };          // 残局汇总
+        String ClutchDetailText{ get; };    // 1v1..1v5 明细
+        String FirstKillText{ get; };       // 首杀 / 首死
+        String BombText{ get; };            // 下包 / 拆包 / 爆炸
+        String FlashText{ get; };           // 闪光（对敌 / 对友）
+        String UtilityText{ get; };         // 投掷伤害
+        String SwingText{ get; };           // rating3 影响力评分
+        String EloText{ get; };             // 本场 ELO 变动
+        String RankText{ get; };            // 平台排名
+        String HeadshotCountText{ get; };   // 爆头数 / 总击杀
+        String SideTText{ get; };           // T 半场数据
+        String SideCtText{ get; };          // CT 半场数据
+    }
+
+    // 完美平台「最近对局」列表中的一行。
+    runtimeclass PerfectMatchRow
+    {
+        PerfectMatchRow();
+
+        String MatchId{ get; };
+        String MapLabel{ get; };
+        String ResultText{ get; };      // 胜利 / 失败
+        String ScoreText{ get; };       // 13 : 7（我方在前）
+        String TimeText{ get; };
+        String KdaText{ get; };
+        String RatingText{ get; };
+        String WeText{ get; };
+        String EloText{ get; };         // ELO +41
+        String ModeText{ get; };        // 天梯组排对局
+        String MvpText{ get; };         // MVP 标记
+        String DurationText{ get; };    // 31 分钟
+        String ScoreChangeText{ get; }; // 对方分数（同场其他人视角）
+        String MultiKillText{ get; };   // 3杀×1
+        Boolean IsWin{ get; };
+        Microsoft.UI.Xaml.Media.Brush ResultBrush{ get; };
+    }
+
+    // 完美平台对局详情中的一名玩家。
+    runtimeclass PerfectMatchPlayerRow
+    {
+        PerfectMatchPlayerRow();
+
+        String Nickname{ get; };
+        String KdaText{ get; };
+        String RatingText{ get; };
+        String AdrText{ get; };         // ADPR
+        String RwsText{ get; };
+        String WeText{ get; };
+        String HeadshotText{ get; };    // 爆头率
+        String KdText{ get; };
+        String MvpText{ get; };
+        Boolean IsMvp{ get; };
+        Microsoft.UI.Xaml.Visibility MvpVisibility{ get; };
+    }
+
+    [default_interface]
+    runtimeclass MainWindow : Microsoft.UI.Xaml.Window
+    {
+        MainWindow();
+        Int32 MyProperty;
+    }
+}

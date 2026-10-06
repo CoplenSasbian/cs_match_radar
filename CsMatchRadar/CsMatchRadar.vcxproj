@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.Windows.SDK.BuildTools.10.0.28000.2705\build\Microsoft.Windows.SDK.BuildTools.props" Condition="Exists('..\packages\Microsoft.Windows.SDK.BuildTools.10.0.28000.2705\build\Microsoft.Windows.SDK.BuildTools.props')" />
+  <Import Project="..\packages\Microsoft.Windows.CppWinRT.3.0.260818.1\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.3.0.260818.1\build\native\Microsoft.Windows.CppWinRT.props')" />
+  <Import Project="..\packages\Microsoft.WindowsAppSDK.2.5.1\build\native\Microsoft.WindowsAppSDK.props" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.2.5.1\build\native\Microsoft.WindowsAppSDK.props')" />
+  <Import Project="..\packages\Microsoft.WindowsAppSDK.WinUI.2.3.9\build\native\Microsoft.WindowsAppSDK.WinUI.props" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.WinUI.2.3.9\build\native\Microsoft.WindowsAppSDK.WinUI.props')" />
+  <Import Project="..\packages\Microsoft.WindowsAppSDK.Widgets.2.0.5\build\native\Microsoft.WindowsAppSDK.Widgets.props" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.Widgets.2.0.5\build\native\Microsoft.WindowsAppSDK.Widgets.props')" />
+  <Import Project="..\packages\Microsoft.WindowsAppSDK.Search.2.5.5\build\native\Microsoft.WindowsAppSDK.Search.props" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.Search.2.5.5\build\native\Microsoft.WindowsAppSDK.Search.props')" />
+  <Import Project="..\packages\Microsoft.WindowsAppSDK.Runtime.2.5.1\build\native\Microsoft.WindowsAppSDK.Runtime.props" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.Runtime.2.5.1\build\native\Microsoft.WindowsAppSDK.Runtime.props')" />
+  <Import Project="..\packages\Microsoft.WindowsAppSDK.ML.2.1.94\build\native\Microsoft.WindowsAppSDK.ML.props" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.ML.2.1.94\build\native\Microsoft.WindowsAppSDK.ML.props')" />
+  <Import Project="..\packages\Microsoft.WindowsAppSDK.AI.2.5.5\build\native\Microsoft.WindowsAppSDK.AI.props" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.AI.2.5.5\build\native\Microsoft.WindowsAppSDK.AI.props')" />
+  <Import Project="..\packages\Microsoft.WindowsAppSDK.Foundation.2.3.12\build\native\Microsoft.WindowsAppSDK.Foundation.props" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.Foundation.2.3.12\build\native\Microsoft.WindowsAppSDK.Foundation.props')" />
+  <Import Project="..\packages\Microsoft.WindowsAppSDK.InteractiveExperiences.2.1.9\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.props" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.InteractiveExperiences.2.1.9\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.props')" />
+  <Import Project="..\packages\Microsoft.WindowsAppSDK.DWrite.2.1.0\build\Microsoft.WindowsAppSDK.DWrite.props" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.DWrite.2.1.0\build\Microsoft.WindowsAppSDK.DWrite.props')" />
+  <Import Project="..\packages\Microsoft.WindowsAppSDK.Base.2.0.4\build\native\Microsoft.WindowsAppSDK.Base.props" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.Base.2.0.4\build\native\Microsoft.WindowsAppSDK.Base.props')" />
+  <Import Project="..\packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.251221100\build\Microsoft.Windows.SDK.BuildTools.MSIX.props" Condition="Exists('..\packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.251221100\build\Microsoft.Windows.SDK.BuildTools.MSIX.props')" />
+  <Import Project="..\packages\Microsoft.Windows.AI.MachineLearning.2.1.74\build\native\Microsoft.Windows.AI.MachineLearning.props" Condition="Exists('..\packages\Microsoft.Windows.AI.MachineLearning.2.1.74\build\native\Microsoft.Windows.AI.MachineLearning.props')" />
+  <PropertyGroup Label="Globals">
+    <CppWinRTOptimized>true</CppWinRTOptimized>
+    <CppWinRTRootNamespaceAutoMerge>true</CppWinRTRootNamespaceAutoMerge>
+    <MinimalCoreWin>true</MinimalCoreWin>
+    <ProjectGuid>{9068df03-e55e-43da-901e-d0ec42c8e6dc}</ProjectGuid>
+    <ProjectName>CsMachRadar</ProjectName>
+    <RootNamespace>App1</RootNamespace>
+    <!--
+      $(TargetName) should be same as $(RootNamespace) so that the produced binaries (.exe/.pri/etc.)
+      have a name that matches the .winmd
+    -->
+    <TargetName>$(RootNamespace)</TargetName>
+    <DefaultLanguage>zh-CN</DefaultLanguage>
+    <MinimumVisualStudioVersion>16.0</MinimumVisualStudioVersion>
+    <AppContainerApplication>false</AppContainerApplication>
+    <!--
+      本程序是普通桌面工具（查 5E / 完美战绩），不需要 MSIX 包身份。
+      WindowsPackageType=None 让它按 unpackaged 方式构建：
+        - 不生成 AppxManifest，不需要 Add-AppxPackage 注册；
+        - 输出的 exe 目录即运行目录，VS 里直接 F5 / 双击 exe 都能启动；
+        - 依赖的 5eApi.dll / PerfectWorldApi.dll 与 exe 同目录，
+          不会再出现"包内 DLL 与 exe 版本不匹配"的 0xC0000139。
+    -->
+    <WindowsPackageType>None</WindowsPackageType>
+    <AppxPackage>false</AppxPackage>
+    <ApplicationType>Windows Store</ApplicationType>
+    <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformMinVersion>10.0.17763.0</WindowsTargetPlatformMinVersion>
+    <UseWinUI>true</UseWinUI>
+    <WinUISDKReferences>false</WinUISDKReferences>
+    <EnableMsixTooling>false</EnableMsixTooling>
+    <!--
+      unpackaged 模式下不生成包身份，需要用 bootstrapper 自行定位
+      Windows App Runtime；SelfContained=true 表示把运行时一起带上，
+      拷贝整个输出目录即可运行，不依赖机器上是否预装。
+    -->
+    <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+    <SelfContained>true</SelfContained>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|ARM64">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM64">
+      <Configuration>Release</Configuration>
+      <Platform>ARM64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' &gt;= '18.0'">v145</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' &lt; '18.0'">v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <DesktopCompatible>true</DesktopCompatible>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'" Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'" Label="Configuration">
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
+      <WarningLevel>Level4</WarningLevel>
+      <LanguageStandard Condition="'$(VisualStudioVersion)' &gt;= '18.0'">stdcpp20</LanguageStandard>
+      <LanguageStandard Condition="'$(VisualStudioVersion)' &lt; '18.0'">stdcpp17</LanguageStandard>
+      <AdditionalOptions>%(AdditionalOptions) /bigobj</AdditionalOptions>
+      <!--
+        源码含中文注释，显式按 UTF-8 解析。
+        不指定时 MSVC 会回退到系统代码页（936），遇到没有 BOM 的
+        UTF-8 中文文件会错位解析并报出误导性的 C2001/C2447。
+      -->
+      <AdditionalOptions>%(AdditionalOptions) /utf-8</AdditionalOptions>
+      <!-- 5eApi 的源码直接编入本应用（见下方 ClCompile），
+           其头文件所在目录需要加入搜索路径。 -->
+      <AdditionalIncludeDirectories>$(ProjectDir)..\5eApi;$(ProjectDir)..\PerfectWorldApi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <!-- CredentialStore 用 DPAPI（CryptProtectData）与 base64 编解码。 -->
+      <AdditionalDependencies>crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
+    <ClCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+    <ClCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup Condition="'$(WindowsPackageType)'!='None' and Exists('Package.appxmanifest')">
+    <AppxManifest Include="Package.appxmanifest">
+      <SubType>Designer</SubType>
+    </AppxManifest>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="app.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="ViewModels.h" />
+    <ClInclude Include="CredentialStore.h" />
+    <ClInclude Include="App.xaml.h">
+      <DependentUpon>App.xaml</DependentUpon>
+    </ClInclude>
+    <ClInclude Include="MainWindow.xaml.h">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </ClInclude>
+    <ClInclude Include="MatchWindow.xaml.h">
+      <DependentUpon>MatchWindow.xaml</DependentUpon>
+    </ClInclude>
+    <ClInclude Include="Fmt.h" />
+    <ClInclude Include="LiveMatchModels.h" />
+    <ClInclude Include="FiveECdpCapture.h" />
+    <ClInclude Include="PerfectLogWatcher.h" />
+    <ClInclude Include="Converters.h">
+      <DependentUpon>Converters.idl</DependentUpon>
+    </ClInclude>
+    <ClInclude Include="PlayerCard.xaml.h">
+      <DependentUpon>PlayerCard.xaml</DependentUpon>
+    </ClInclude>
+    <ClInclude Include="RadarPlayerCard.xaml.h">
+      <DependentUpon>RadarPlayerCard.xaml</DependentUpon>
+    </ClInclude>
+    <ClInclude Include="RadarPage.xaml.h">
+      <DependentUpon>RadarPage.xaml</DependentUpon>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml" />
+    <Page Include="MainWindow.xaml" />
+    <Page Include="MatchWindow.xaml" />
+    <Page Include="PlayerCard.xaml" />
+    <Page Include="RadarPlayerCard.xaml" />
+    <Page Include="RadarPage.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="MatchWindow.idl" />
+    <Midl Include="PlayerCard.idl" />
+    <Midl Include="RadarPlayerCard.idl" />
+    <Midl Include="RadarPage.idl" />
+    <Midl Include="Converters.idl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="App.xaml.cpp">
+      <DependentUpon>App.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="MainWindow.xaml.cpp">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="MatchWindow.xaml.cpp">
+      <DependentUpon>MatchWindow.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="PlayerCard.xaml.cpp">
+      <DependentUpon>PlayerCard.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="RadarPlayerCard.xaml.cpp">
+      <DependentUpon>RadarPlayerCard.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="RadarPage.xaml.cpp">
+      <DependentUpon>RadarPage.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="Converters.cpp" />
+    <ClCompile Include="FiveECdpCapture.cpp" />
+    <ClCompile Include="PerfectLogWatcher.cpp" />
+    <ClCompile Include="ViewModels.cpp" />
+    <ClCompile Include="CredentialStore.cpp" />
+    <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
+  </ItemGroup>
+  <!--
+    5eApi 的对局信息获取实现直接编入本应用：
+    它是一个普通 C++ 静态实现（无 COM/DLL 特有依赖），
+    直接编译可以省掉额外的 DLL 部署与加载路径问题。
+    这些文件使用自己的 pch.h（位于 ..\5eApi），因此对本项目关闭预编译头。
+  -->
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="MainWindow.idl">
+      <SubType>Code</SubType>
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="readme.txt">
+      <DeploymentContent>false</DeploymentContent>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\LockScreenLogo.scale-200.png" />
+    <Image Include="Assets\SplashScreen.scale-200.png" />
+    <Image Include="Assets\Square150x150Logo.scale-200.png" />
+    <Image Include="Assets\Square44x44Logo.scale-200.png" />
+    <Image Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
+    <Image Include="Assets\StoreLogo.png" />
+    <Image Include="Assets\Wide310x150Logo.scale-200.png" />
+  </ItemGroup>
+  <!--
+    扫码登录的本地页面与脚本。WebView2 在运行时从安装目录
+    （Assets\qr_page.html）加载，因此必须随包部署。
+    Image 项只收集图片，这里用 Content 显式声明部署内容。
+  -->
+  <ItemGroup>
+    <Content Include="Assets\qr_page.html">
+      <DeploymentContent>true</DeploymentContent>
+    </Content>
+    <Content Include="Assets\qr.js">
+      <DeploymentContent>true</DeploymentContent>
+    </Content>
+    <Content Include="Assets\qrcode.min.js">
+      <DeploymentContent>true</DeploymentContent>
+    </Content>
+  </ItemGroup>
+  <!--
+    Defining the "Msix" ProjectCapability here allows the Single-project MSIX Packaging
+    Tools extension to be activated for this project even if the Windows App SDK Nuget
+    package has not yet been restored.
+  -->
+  <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
+    <ProjectCapability Include="Msix" />
+  </ItemGroup>
+  <!--
+    Defining the "HasPackageAndPublishMenuAddedByProject" property here allows the Solution
+    Explorer "Package and Publish" context menu entry to be enabled for this project even if
+    the Windows App SDK Nuget package has not yet been restored.
+  -->
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
+    <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\5eApi\5eApi.vcxproj">
+      <Project>{6a2a293b-e7a2-453d-9998-60f27145ad8f}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\PerfectWorldApi\PerfectWorldApi.vcxproj">
+      <Project>{a242ee8a-06ca-4ab3-9841-aab3943fc1a2}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+
+  <!--
+    项目引用会构建 5eApi / PerfectWorldApi，但不会把产出的 DLL 复制到本应用的
+    输出目录，也不会登记为打包输入。MSIX 打包并不扫描输出目录，只收集显式的
+    PackagingOutputs 项，因此仅把 DLL 拷进 $(OutDir) 是不够的 —— 包内仍只有
+    App1.exe，运行时便会报找不到 DLL。
+
+    这里分两步：
+      1) 把 DLL 复制到 $(OutDir)；
+      2) 在 _ComputeAppxPackagePayload 之前把 DLL 追加到 PackagingOutputs。
+    该目标挂在 Build 之后，保证 DLL 此时已生成。
+  -->
+  <Target Name="CopyPlatformDlls"
+          AfterTargets="Build"
+          BeforeTargets="_ComputeAppxPackagePayload">
+    <ItemGroup>
+      <PlatformDll Include="$(ProjectDir)..\5eApi\$(Platform)\$(Configuration)\5eApi.dll" />
+      <PlatformDll Include="$(ProjectDir)..\PerfectWorldApi\$(Platform)\$(Configuration)\PerfectWorldApi.dll" />
+    </ItemGroup>
+    <Copy SourceFiles="@(PlatformDll)"
+          DestinationFolder="$(OutDir)"
+          SkipUnchangedFiles="true"
+          Condition="Exists('%(PlatformDll.FullPath)')" />
+    <Warning Text="未找到平台 DLL：%(PlatformDll.FullPath)"
+             Condition="!Exists('%(PlatformDll.FullPath)')" />
+
+    <!-- 登记进打包负载：TargetPath 决定包内相对路径（此处为根目录）。 -->
+    <ItemGroup>
+      <PackagingOutputs Include="$(OutDir)5eApi.dll" Condition="Exists('$(OutDir)5eApi.dll')">
+        <ProjectName>$(ProjectName)</ProjectName>
+        <TargetPath>5eApi.dll</TargetPath>
+        <OutputGroup>BuiltProjectOutputGroup</OutputGroup>
+      </PackagingOutputs>
+      <PackagingOutputs Include="$(OutDir)PerfectWorldApi.dll" Condition="Exists('$(OutDir)PerfectWorldApi.dll')">
+        <ProjectName>$(ProjectName)</ProjectName>
+        <TargetPath>PerfectWorldApi.dll</TargetPath>
+        <OutputGroup>BuiltProjectOutputGroup</OutputGroup>
+      </PackagingOutputs>
+
+      <!--
+        扫码登录页面与脚本：WebView2 运行时按安装目录加载
+        Assets\qr_page.html，因此必须与本 exe 一起落盘并进包。
+        下面的 Copy 把文件放到 $(OutDir)Assets\，TargetPath 即包内路径。
+      -->
+      <QrAsset Include="$(ProjectDir)Assets\qr_page.html">
+        <TargetPath>Assets\qr_page.html</TargetPath>
+      </QrAsset>
+      <QrAsset Include="$(ProjectDir)Assets\qr.js">
+        <TargetPath>Assets\qr.js</TargetPath>
+      </QrAsset>
+      <QrAsset Include="$(ProjectDir)Assets\qrcode.min.js">
+        <TargetPath>Assets\qrcode.min.js</TargetPath>
+      </QrAsset>
+    </ItemGroup>
+
+    <Copy SourceFiles="@(QrAsset)"
+          DestinationFiles="@(QrAsset->'$(OutDir)%(TargetPath)')"
+          SkipUnchangedFiles="true" />
+
+    <ItemGroup>
+      <PackagingOutputs Include="@(QrAsset->'$(OutDir)%(TargetPath)')">
+        <ProjectName>$(ProjectName)</ProjectName>
+        <TargetPath>%(QrAsset.TargetPath)</TargetPath>
+        <OutputGroup>BuiltProjectOutputGroup</OutputGroup>
+      </PackagingOutputs>
+    </ItemGroup>
+  </Target>
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\Microsoft.Web.WebView2.1.0.3719.77\build\native\Microsoft.Web.WebView2.targets" Condition="Exists('..\packages\Microsoft.Web.WebView2.1.0.3719.77\build\native\Microsoft.Web.WebView2.targets')" />
+    <Import Project="..\packages\Microsoft.Windows.AI.MachineLearning.2.1.74\build\native\Microsoft.Windows.AI.MachineLearning.targets" Condition="Exists('..\packages\Microsoft.Windows.AI.MachineLearning.2.1.74\build\native\Microsoft.Windows.AI.MachineLearning.targets')" />
+    <Import Project="..\packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.251221100\build\Microsoft.Windows.SDK.BuildTools.MSIX.targets" Condition="Exists('..\packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.251221100\build\Microsoft.Windows.SDK.BuildTools.MSIX.targets')" />
+    <Import Project="..\packages\Microsoft.WindowsAppSDK.Base.2.0.4\build\native\Microsoft.WindowsAppSDK.Base.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.Base.2.0.4\build\native\Microsoft.WindowsAppSDK.Base.targets')" />
+    <Import Project="..\packages\Microsoft.WindowsAppSDK.DWrite.2.1.0\build\Microsoft.WindowsAppSDK.DWrite.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.DWrite.2.1.0\build\Microsoft.WindowsAppSDK.DWrite.targets')" />
+    <Import Project="..\packages\Microsoft.WindowsAppSDK.InteractiveExperiences.2.1.9\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.InteractiveExperiences.2.1.9\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.targets')" />
+    <Import Project="..\packages\Microsoft.WindowsAppSDK.Foundation.2.3.12\build\native\Microsoft.WindowsAppSDK.Foundation.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.Foundation.2.3.12\build\native\Microsoft.WindowsAppSDK.Foundation.targets')" />
+    <Import Project="..\packages\Microsoft.WindowsAppSDK.AI.2.5.5\build\native\Microsoft.WindowsAppSDK.AI.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.AI.2.5.5\build\native\Microsoft.WindowsAppSDK.AI.targets')" />
+    <Import Project="..\packages\Microsoft.WindowsAppSDK.ML.2.1.94\build\native\Microsoft.WindowsAppSDK.ML.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.ML.2.1.94\build\native\Microsoft.WindowsAppSDK.ML.targets')" />
+    <Import Project="..\packages\Microsoft.WindowsAppSDK.Runtime.2.5.1\build\native\Microsoft.WindowsAppSDK.Runtime.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.Runtime.2.5.1\build\native\Microsoft.WindowsAppSDK.Runtime.targets')" />
+    <Import Project="..\packages\Microsoft.WindowsAppSDK.Search.2.5.5\build\native\Microsoft.WindowsAppSDK.Search.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.Search.2.5.5\build\native\Microsoft.WindowsAppSDK.Search.targets')" />
+    <Import Project="..\packages\Microsoft.WindowsAppSDK.Widgets.2.0.5\build\native\Microsoft.WindowsAppSDK.Widgets.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.Widgets.2.0.5\build\native\Microsoft.WindowsAppSDK.Widgets.targets')" />
+    <Import Project="..\packages\Microsoft.WindowsAppSDK.WinUI.2.3.9\build\native\Microsoft.WindowsAppSDK.WinUI.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.WinUI.2.3.9\build\native\Microsoft.WindowsAppSDK.WinUI.targets')" />
+    <Import Project="..\packages\Microsoft.WindowsAppSDK.2.5.1\build\native\Microsoft.WindowsAppSDK.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.2.5.1\build\native\Microsoft.WindowsAppSDK.targets')" />
+    <Import Project="..\packages\Microsoft.Windows.CppWinRT.3.0.260818.1\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.3.0.260818.1\build\native\Microsoft.Windows.CppWinRT.targets')" />
+    <Import Project="..\packages\Microsoft.Windows.SDK.BuildTools.10.0.28000.2705\build\Microsoft.Windows.SDK.BuildTools.targets" Condition="Exists('..\packages\Microsoft.Windows.SDK.BuildTools.10.0.28000.2705\build\Microsoft.Windows.SDK.BuildTools.targets')" />
+    <Import Project="..\packages\Microsoft.Windows.ImplementationLibrary.1.0.260126.7\build\native\Microsoft.Windows.ImplementationLibrary.targets" Condition="Exists('..\packages\Microsoft.Windows.ImplementationLibrary.1.0.260126.7\build\native\Microsoft.Windows.ImplementationLibrary.targets')" />
+  </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Web.WebView2.1.0.3719.77\build\native\Microsoft.Web.WebView2.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Web.WebView2.1.0.3719.77\build\native\Microsoft.Web.WebView2.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Windows.AI.MachineLearning.2.1.74\build\native\Microsoft.Windows.AI.MachineLearning.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.AI.MachineLearning.2.1.74\build\native\Microsoft.Windows.AI.MachineLearning.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Windows.AI.MachineLearning.2.1.74\build\native\Microsoft.Windows.AI.MachineLearning.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.AI.MachineLearning.2.1.74\build\native\Microsoft.Windows.AI.MachineLearning.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.251221100\build\Microsoft.Windows.SDK.BuildTools.MSIX.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.251221100\build\Microsoft.Windows.SDK.BuildTools.MSIX.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.251221100\build\Microsoft.Windows.SDK.BuildTools.MSIX.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.251221100\build\Microsoft.Windows.SDK.BuildTools.MSIX.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.Base.2.0.4\build\native\Microsoft.WindowsAppSDK.Base.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.Base.2.0.4\build\native\Microsoft.WindowsAppSDK.Base.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.Base.2.0.4\build\native\Microsoft.WindowsAppSDK.Base.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.Base.2.0.4\build\native\Microsoft.WindowsAppSDK.Base.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.DWrite.2.1.0\build\Microsoft.WindowsAppSDK.DWrite.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.DWrite.2.1.0\build\Microsoft.WindowsAppSDK.DWrite.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.DWrite.2.1.0\build\Microsoft.WindowsAppSDK.DWrite.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.DWrite.2.1.0\build\Microsoft.WindowsAppSDK.DWrite.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.InteractiveExperiences.2.1.9\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.InteractiveExperiences.2.1.9\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.InteractiveExperiences.2.1.9\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.InteractiveExperiences.2.1.9\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.Foundation.2.3.12\build\native\Microsoft.WindowsAppSDK.Foundation.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.Foundation.2.3.12\build\native\Microsoft.WindowsAppSDK.Foundation.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.Foundation.2.3.12\build\native\Microsoft.WindowsAppSDK.Foundation.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.Foundation.2.3.12\build\native\Microsoft.WindowsAppSDK.Foundation.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.AI.2.5.5\build\native\Microsoft.WindowsAppSDK.AI.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.AI.2.5.5\build\native\Microsoft.WindowsAppSDK.AI.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.AI.2.5.5\build\native\Microsoft.WindowsAppSDK.AI.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.AI.2.5.5\build\native\Microsoft.WindowsAppSDK.AI.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.ML.2.1.94\build\native\Microsoft.WindowsAppSDK.ML.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.ML.2.1.94\build\native\Microsoft.WindowsAppSDK.ML.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.ML.2.1.94\build\native\Microsoft.WindowsAppSDK.ML.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.ML.2.1.94\build\native\Microsoft.WindowsAppSDK.ML.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.Runtime.2.5.1\build\native\Microsoft.WindowsAppSDK.Runtime.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.Runtime.2.5.1\build\native\Microsoft.WindowsAppSDK.Runtime.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.Runtime.2.5.1\build\native\Microsoft.WindowsAppSDK.Runtime.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.Runtime.2.5.1\build\native\Microsoft.WindowsAppSDK.Runtime.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.Search.2.5.5\build\native\Microsoft.WindowsAppSDK.Search.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.Search.2.5.5\build\native\Microsoft.WindowsAppSDK.Search.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.Search.2.5.5\build\native\Microsoft.WindowsAppSDK.Search.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.Search.2.5.5\build\native\Microsoft.WindowsAppSDK.Search.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.Widgets.2.0.5\build\native\Microsoft.WindowsAppSDK.Widgets.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.Widgets.2.0.5\build\native\Microsoft.WindowsAppSDK.Widgets.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.Widgets.2.0.5\build\native\Microsoft.WindowsAppSDK.Widgets.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.Widgets.2.0.5\build\native\Microsoft.WindowsAppSDK.Widgets.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.WinUI.2.3.9\build\native\Microsoft.WindowsAppSDK.WinUI.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.WinUI.2.3.9\build\native\Microsoft.WindowsAppSDK.WinUI.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.WinUI.2.3.9\build\native\Microsoft.WindowsAppSDK.WinUI.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.WinUI.2.3.9\build\native\Microsoft.WindowsAppSDK.WinUI.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.2.5.1\build\native\Microsoft.WindowsAppSDK.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.2.5.1\build\native\Microsoft.WindowsAppSDK.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.2.5.1\build\native\Microsoft.WindowsAppSDK.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.2.5.1\build\native\Microsoft.WindowsAppSDK.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.3.0.260818.1\build\native\Microsoft.Windows.CppWinRT.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.3.0.260818.1\build\native\Microsoft.Windows.CppWinRT.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.3.0.260818.1\build\native\Microsoft.Windows.CppWinRT.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.3.0.260818.1\build\native\Microsoft.Windows.CppWinRT.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Windows.SDK.BuildTools.10.0.28000.2705\build\Microsoft.Windows.SDK.BuildTools.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.SDK.BuildTools.10.0.28000.2705\build\Microsoft.Windows.SDK.BuildTools.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Windows.SDK.BuildTools.10.0.28000.2705\build\Microsoft.Windows.SDK.BuildTools.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.SDK.BuildTools.10.0.28000.2705\build\Microsoft.Windows.SDK.BuildTools.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Windows.ImplementationLibrary.1.0.260126.7\build\native\Microsoft.Windows.ImplementationLibrary.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.ImplementationLibrary.1.0.260126.7\build\native\Microsoft.Windows.ImplementationLibrary.targets'))" />
+  </Target>
+</Project>

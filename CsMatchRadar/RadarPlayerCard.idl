@@ -1,0 +1,45 @@
+namespace App1
+{
+    // A player row on the radar: aggregates 5E and Perfect platform info.
+    // Bound directly by RadarPlayerCard, so it lives in the same IDL file
+    // (MIDLRT here does not resolve cross-file type references).
+    runtimeclass RadarPlayer
+    {
+        RadarPlayer();
+
+        String Name{ get; };
+        Int32 Team{ get; };
+        Boolean IsMe{ get; };
+
+        String FiveERank{ get; };
+        String FiveEPlaytime{ get; };
+        String FiveEStatus{ get; };
+        Microsoft.UI.Xaml.Media.Brush FiveEStatusBrush{ get; };
+        Boolean HasFiveE{ get; };
+
+        String PerfectRank{ get; };
+        String PerfectPlaytime{ get; };
+        String PerfectStatus{ get; };
+        Microsoft.UI.Xaml.Media.Brush PerfectStatusBrush{ get; };
+        Boolean HasPerfect{ get; };
+
+        String RiskBadge{ get; };
+        Microsoft.UI.Xaml.Media.Brush RiskBrush{ get; };
+
+        String FiveEUuid{ get; };
+        String PerfectSteamId{ get; };
+    }
+
+    // A player card on the radar: click to open 5E / Perfect profile page.
+    // Canonical WinUI shape: [default_interface] on the class + UserControl as
+    // the default, with INotifyPropertyChanged as an extra interface.
+    [default_interface]
+    runtimeclass RadarPlayerCard : Microsoft.UI.Xaml.Controls.UserControl,
+                                   Microsoft.UI.Xaml.Data.INotifyPropertyChanged
+    {
+        RadarPlayerCard();
+
+        // The bound player row (injected by RadarPage via ItemsControl).
+        RadarPlayer Player{ get; set; };
+    }
+}

@@ -1,0 +1,14 @@
+namespace App1
+{
+    // bool -> Visibility (true shows).
+    runtimeclass BoolToVisibility : [default] Microsoft.UI.Xaml.Data.IValueConverter
+    {
+        BoolToVisibility();
+    }
+
+    // bool -> Visibility (true hides).
+    runtimeclass InverseBoolToVisibility : [default] Microsoft.UI.Xaml.Data.IValueConverter
+    {
+        InverseBoolToVisibility();
+    }
+}

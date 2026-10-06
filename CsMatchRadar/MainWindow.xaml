@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="App1.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:App1"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="CS Match Radar">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- 自绘标题栏：导航收起按钮 → 标题 → 居中的搜索框 → 系统最小/最大化/关闭。
+             搜索框两侧的区域仍是标题栏（可拖拽、双击最大化）。
+             搜索框是可交互控件，WinUI3 会自动把它排除出标题栏的拖拽/双击区域，
+             因此在框内双击、拖动不会触发窗口动作。 -->
+        <Grid x:Name="AppTitleBar" Grid.Row="0" Height="44"
+              Background="{ThemeResource LayerFillColorDefaultBrush}"
+              ColumnSpacing="8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="138"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- 导航窗格收起/展开按钮 -->
+            <Button Grid.Column="0" x:Name="HeaderPaneButton"
+                    VerticalAlignment="Center" Margin="8,0,0,0"
+                    ToolTipService.ToolTip="收起/展开导航"
+                    Click="OnHeaderPaneClick">
+                <FontIcon Glyph="&#xE700;"/>
+            </Button>
+
+            <!-- 标题 -->
+            <TextBlock Grid.Column="1" Text="CS Match Radar" FontWeight="SemiBold"
+                       VerticalAlignment="Center" Margin="4,0,12,0"/>
+
+            <!-- 居中容器：搜索框 + 平台选择器（5E / 完美）。
+                 仅在「查玩家」页面显示，设置页等隐藏。 -->
+            <StackPanel x:Name="HeaderSearchArea" Grid.Column="2" Orientation="Horizontal" Spacing="8"
+                        HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBox x:Name="HeaderSearchBox" Width="220"
+                         PlaceholderText="玩家 / ID / SteamID"
+                         KeyDown="OnHeaderSearchKeyDown"/>
+                <ComboBox x:Name="HeaderPlatformBox" SelectedIndex="0"
+                          SelectionChanged="OnHeaderPlatformChanged">
+                    <ComboBoxItem Content="5E"/>
+                    <ComboBoxItem Content="完美"/>
+                </ComboBox>
+            </StackPanel>
+
+            <!-- Grid.Column=3 留空给系统最小/最大化/关闭按钮。 -->
+        </Grid>
+
+        <!-- 侧边导航 + 内容区 -->
+        <NavigationView Grid.Row="1" x:Name="MainNav"
+                        PaneDisplayMode="Left"
+                        IsBackButtonVisible="Collapsed"
+                        IsSettingsVisible="False"
+                        IsPaneToggleButtonVisible="False"
+                        SelectionChanged="OnNavSelectionChanged">
+            <NavigationView.MenuItems>
+                <NavigationViewItem x:Name="NavSearch" Tag="search" Content="查玩家">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE8FC;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem x:Name="NavSettings" Tag="settings" Content="设置">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE713;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem x:Name="NavRadar" Tag="radar" Content="对局雷达">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE8B1;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- ======== 5E 页面：搜人 → 人物卡片 → 弹出对局窗口 ======== -->
+                <Grid x:Name="Page5E" Grid.Row="0" Visibility="Visible">
+                    <Popup x:Name="FiveESearchPopup"
+                           PlacementTarget="{x:Bind HeaderSearchBox}"
+                           IsLightDismissEnabled="True"
+                           HorizontalOffset="80" VerticalOffset="4">
+                        <Border Background="{ThemeResource LayerFillColorAltBrush}"
+                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                BorderThickness="1" CornerRadius="6" Padding="4"
+                                MinWidth="360" MaxWidth="560">
+                            <ScrollViewer MaxHeight="320" VerticalScrollBarVisibility="Auto">
+                                <StackPanel x:Name="FiveESearchResults" Spacing="2"/>
+                            </ScrollViewer>
+                        </Border>
+                    </Popup>
+
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <local:PlayerCard x:Name="FiveECard" Margin="16,12"/>
+                    </ScrollViewer>
+                </Grid>
+
+
+ 
+ 
+
+                <!-- ======== 完美世界页面：搜人 → 人物卡片 → 弹出对局窗口 ======== -->
+                <Grid x:Name="PagePerfect" Grid.Row="0" Visibility="Collapsed">
+                    <Popup x:Name="PerfectSearchPopup"
+                           PlacementTarget="{x:Bind HeaderSearchBox}"
+                           IsLightDismissEnabled="True"
+                           HorizontalOffset="110" VerticalOffset="4">
+                        <Border Background="{ThemeResource LayerFillColorAltBrush}"
+                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                BorderThickness="1" CornerRadius="6" Padding="4"
+                                MinWidth="380" MaxWidth="560">
+                            <ScrollViewer MaxHeight="320" VerticalScrollBarVisibility="Auto">
+                                <StackPanel x:Name="PerfectSearchResults" Spacing="2"/>
+                            </ScrollViewer>
+                        </Border>
+                    </Popup>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <local:PlayerCard x:Name="PerfectCard" Margin="16,12"/>
+                    </ScrollViewer>
+                </Grid>
+                <!-- ======== 设置页面 ======== -->
+                <Grid x:Name="PageSettings" Grid.Row="0" Visibility="Collapsed">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <StackPanel Spacing="12" Padding="20">
+                            <TextBlock Text="设置" Style="{ThemeResource TitleTextBlockStyle}"/>
+
+                            <!-- 完美平台登录 -->
+                            <Border Padding="14" CornerRadius="6"
+                                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                    BorderThickness="1"
+                                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
+                                <StackPanel Spacing="10">
+                                    <TextBlock Text="完美世界 登录" FontWeight="SemiBold"/>
+                                    <TextBlock Text="完美平台的接口需要登录凭据（5E 查询无需登录）。扫码一次即可，凭据会加密保存在本机，下次启动自动登录。"
+                                               TextWrapping="Wrap" FontSize="12"
+                                               Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <Button x:Name="PerfectQrButton"
+                                                Content="扫码登录"
+                                                Click="OnPerfectQrClick"/>
+                                        <Button x:Name="PerfectLogoutButton"
+                                                Content="退出登录"
+                                                Click="OnPerfectLogoutClick"
+                                                Visibility="Collapsed"/>
+                                    </StackPanel>
+
+                                    <TextBlock x:Name="PerfectAuthStatus"
+                                               Text="未登录。"
+                                               TextWrapping="Wrap" FontSize="12"
+                                               Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+
+                                    <!-- 二维码区域 -->
+                                    <StackPanel x:Name="PerfectQrPanel" Visibility="Collapsed" Spacing="6">
+                                        <WebView2 x:Name="PerfectQrView"
+                                                  Width="260" Height="260"
+                                                  HorizontalAlignment="Left"/>
+                                        <TextBlock x:Name="PerfectQrHint"
+                                                   Text="请用完美世界 App 扫描二维码（5 分钟内有效）"
+                                                   FontSize="12"
+                                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                                    </StackPanel>
+
+                                    <!-- 手动填写凭据（兜底） -->
+                                    <Expander Header="手动填写凭据" HorizontalAlignment="Stretch">
+                                        <StackPanel Spacing="8" Padding="0,8,0,0">
+                                            <TextBox x:Name="PerfectTokenBox"
+                                                     Header="access_token"
+                                                     PlaceholderText="登录返回的 access_token"
+                                                     AcceptsReturn="False"/>
+                                            <TextBox x:Name="PerfectSelfSteamBox"
+                                                     Header="登录账号 SteamID"
+                                                     PlaceholderText="例如 76561198000000000"/>
+                                        </StackPanel>
+                                    </Expander>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+
+                <!-- ======== 对局雷达页面 ======== -->
+                <Grid x:Name="PageRadar" Grid.Row="0" Visibility="Collapsed">
+                    <local:RadarPage/>
+                </Grid>
+
+                <!-- 状态栏 -->
+                <Grid Grid.Row="1" Padding="12,6"
+                      Background="{ThemeResource LayerFillColorDefaultBrush}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" x:Name="StatusText" Text="就绪"
+                               FontSize="12" TextTrimming="CharacterEllipsis"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                    <ProgressRing Grid.Column="1" x:Name="BusyRing" Width="16" Height="16"
+                                  IsActive="False" Visibility="Collapsed"/>
+                </Grid>
+            </Grid>
+        </NavigationView>
+    </Grid>
+</Window>
